@@ -1,0 +1,105 @@
+# 📋 LISTA DE ARQUIVOS PARA ENVIAR AO SERVIDOR
+
+## ⚠️ ANTES DE ENVIAR:
+1. Criar email noreply@nbtech.pt no painel Hostinger
+2. Editar config/email.php linha 12 com a senha do email
+3. Criar tabela password_resets no banco de dados (SQL no DEPLOY_HOSTINGER.md)
+
+## 📁 ARQUIVOS NOVOS (Adicionar ao servidor):
+
+### Configuração de Email
+config/email.php                                    ⚠️ EDITAR SENHA ANTES!
+
+### Sistema de Recuperação de Senha
+auth/forgot_password.php
+auth/reset_password.php
+database/add_password_reset.sql
+
+### Perfil de Usuário
+profile.php
+
+### PHPMailer (Biblioteca de Email)
+vendor/phpmailer/phpmailer/src/PHPMailer.php
+vendor/phpmailer/phpmailer/src/SMTP.php
+vendor/phpmailer/phpmailer/src/Exception.php
+
+### Teste (DELETAR após usar)
+test_email.php                                      ⚠️ DELETAR APÓS TESTE!
+
+## 📝 ARQUIVOS ATUALIZADOS (Substituir no servidor):
+
+auth/login.php                                      (link "Esqueci minha senha")
+includes/header.php                                 (botão "Perfil")
+
+## 📚 ARQUIVOS DE DOCUMENTAÇÃO (Opcional - não enviar):
+
+README.md
+INSTALLATION.md
+DEPLOY.md
+UPDATE.md
+FORGOT_PASSWORD_SETUP.md
+PHPMAILER_INSTALL.md
+QUICK_EMAIL_SETUP.md
+CRIAR_EMAIL_CPANEL.md
+DEPLOY_HOSTINGER.md                                 ⭐ LEIA ESTE!
+LISTA_ARQUIVOS_DEPLOY.txt
+
+## 🗂️ ESTRUTURA FINAL NO SERVIDOR:
+
+public_html/
+├── config/
+│   ├── config.php
+│   ├── database.php
+│   └── email.php                    ← NOVO
+├── auth/
+│   ├── login.php                    ← ATUALIZADO
+│   ├── register.php
+│   ├── logout.php
+│   ├── forgot_password.php          ← NOVO
+│   └── reset_password.php           ← NOVO
+├── includes/
+│   ├── header.php                   ← ATUALIZADO
+│   └── footer.php
+├── vendor/
+│   └── phpmailer/
+│       └── phpmailer/
+│           └── src/
+│               ├── PHPMailer.php    ← NOVO
+│               ├── SMTP.php         ← NOVO
+│               └── Exception.php    ← NOVO
+├── profile.php                      ← NOVO
+├── test_email.php                   ← NOVO (deletar após teste)
+└── ... (outros arquivos existentes)
+
+## ✅ CHECKLIST DE DEPLOY:
+
+[ ] 1. Criar email noreply@nbtech.pt no painel Hostinger
+[ ] 2. Editar config/email.php com a senha do email
+[ ] 3. Enviar pasta vendor/ completa
+[ ] 4. Enviar config/email.php (editado)
+[ ] 5. Enviar auth/forgot_password.php
+[ ] 6. Enviar auth/reset_password.php
+[ ] 7. Enviar profile.php
+[ ] 8. Enviar test_email.php
+[ ] 9. Substituir auth/login.php
+[ ] 10. Substituir includes/header.php
+[ ] 11. Criar tabela password_resets no phpMyAdmin
+[ ] 12. Editar test_email.php com seu email (linha 14)
+[ ] 13. Testar: https://nbtech.pt/test_email.php
+[ ] 14. DELETAR test_email.php do servidor
+[ ] 15. Testar recuperação de senha
+[ ] 16. Testar perfil de usuário
+
+## 🎯 TOTAL DE ARQUIVOS:
+- Novos: 9 arquivos
+- Atualizados: 2 arquivos
+- Total: 11 arquivos para enviar
+
+## 📞 SUPORTE:
+Se tiver problemas, verifique:
+- logs/php-errors.log (no servidor)
+- Configurações em config/email.php
+- Se o email foi criado corretamente na Hostinger
+- Se a tabela password_resets foi criada
+
+Boa sorte! 🚀
