@@ -25,15 +25,15 @@ $stats = [
     'completion_rate' => $completion_rate
 ];
 
-$pageTitle = 'Admin Dashboard';
+$pageTitle = __('admin_dashboard_title');
 include '../includes/header.php';
 ?>
 
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-7xl mx-auto">
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-            <p class="mt-2 text-sm text-gray-600">Overview of your application statistics</p>
+            <h1 class="text-3xl font-bold text-gray-900"><?php echo __('admin_dashboard_title'); ?></h1>
+            <p class="mt-2 text-sm text-gray-600"><?php echo __('admin_overview'); ?></p>
         </div>
 
         <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -48,7 +48,7 @@ include '../includes/header.php';
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Total Users</dt>
+                                <dt class="text-sm font-medium text-gray-500 truncate"><?php echo __('admin_total_users'); ?></dt>
                                 <dd class="text-lg font-semibold text-gray-900"><?php echo $stats['total_users']; ?></dd>
                             </dl>
                         </div>
@@ -56,7 +56,7 @@ include '../includes/header.php';
                 </div>
                 <div class="bg-gray-50 px-5 py-3">
                     <div class="text-sm">
-                        <a href="users.php" class="font-medium text-indigo-600 hover:text-indigo-500">View all</a>
+                        <a href="users.php" class="font-medium text-indigo-600 hover:text-indigo-500"><?php echo __('admin_view_all'); ?></a>
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@ include '../includes/header.php';
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Total Tasks</dt>
+                                <dt class="text-sm font-medium text-gray-500 truncate"><?php echo __('admin_total_tasks'); ?></dt>
                                 <dd class="text-lg font-semibold text-gray-900"><?php echo $stats['total_todos']; ?></dd>
                             </dl>
                         </div>
@@ -80,7 +80,7 @@ include '../includes/header.php';
                 </div>
                 <div class="bg-gray-50 px-5 py-3">
                     <div class="text-sm">
-                        <a href="todos.php" class="font-medium text-indigo-600 hover:text-indigo-500">View all</a>
+                        <a href="todos.php" class="font-medium text-indigo-600 hover:text-indigo-500"><?php echo __('admin_view_all'); ?></a>
                     </div>
                 </div>
             </div>
@@ -96,7 +96,7 @@ include '../includes/header.php';
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Completed</dt>
+                                <dt class="text-sm font-medium text-gray-500 truncate"><?php echo __('admin_completed'); ?></dt>
                                 <dd class="text-lg font-semibold text-gray-900"><?php echo $stats['completed_todos']; ?></dd>
                             </dl>
                         </div>
@@ -104,7 +104,7 @@ include '../includes/header.php';
                 </div>
                 <div class="bg-gray-50 px-5 py-3">
                     <div class="text-sm">
-                        <span class="text-gray-600"><?php echo $stats['completion_rate']; ?>% completion rate</span>
+                        <span class="text-gray-600"><?php echo $stats['completion_rate']; ?>% <?php echo __('admin_completion_rate'); ?></span>
                     </div>
                 </div>
             </div>
@@ -120,7 +120,7 @@ include '../includes/header.php';
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-gray-500 truncate">Active</dt>
+                                <dt class="text-sm font-medium text-gray-500 truncate"><?php echo __('admin_active'); ?></dt>
                                 <dd class="text-lg font-semibold text-gray-900"><?php echo $stats['active_todos']; ?></dd>
                             </dl>
                         </div>
@@ -128,7 +128,7 @@ include '../includes/header.php';
                 </div>
                 <div class="bg-gray-50 px-5 py-3">
                     <div class="text-sm">
-                        <span class="text-gray-600">Pending tasks</span>
+                        <span class="text-gray-600"><?php echo __('admin_pending_tasks'); ?></span>
                     </div>
                 </div>
             </div>
@@ -136,7 +136,7 @@ include '../includes/header.php';
 
         <!-- Quick Actions -->
         <div class="mt-8">
-            <h2 class="text-lg font-medium text-gray-900 mb-4">Quick Actions</h2>
+            <h2 class="text-lg font-medium text-gray-900 mb-4"><?php echo __('admin_quick_actions'); ?></h2>
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <a href="users.php" class="relative rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm flex items-center space-x-3 hover:border-gray-400">
                     <div class="flex-shrink-0">
@@ -146,8 +146,8 @@ include '../includes/header.php';
                     </div>
                     <div class="flex-1 min-w-0">
                         <span class="absolute inset-0" aria-hidden="true"></span>
-                        <p class="text-sm font-medium text-gray-900">Manage Users</p>
-                        <p class="text-sm text-gray-500">View and manage all users</p>
+                        <p class="text-sm font-medium text-gray-900"><?php echo __('admin_manage_users'); ?></p>
+                        <p class="text-sm text-gray-500"><?php echo __('admin_manage_users_desc'); ?></p>
                     </div>
                 </a>
 
@@ -159,8 +159,8 @@ include '../includes/header.php';
                     </div>
                     <div class="flex-1 min-w-0">
                         <span class="absolute inset-0" aria-hidden="true"></span>
-                        <p class="text-sm font-medium text-gray-900">Manage Tasks</p>
-                        <p class="text-sm text-gray-500">View and manage all tasks</p>
+                        <p class="text-sm font-medium text-gray-900"><?php echo __('admin_manage_tasks'); ?></p>
+                        <p class="text-sm text-gray-500"><?php echo __('admin_manage_tasks_desc'); ?></p>
                     </div>
                 </a>
 
@@ -172,8 +172,8 @@ include '../includes/header.php';
                     </div>
                     <div class="flex-1 min-w-0">
                         <span class="absolute inset-0" aria-hidden="true"></span>
-                        <p class="text-sm font-medium text-gray-900">My Tasks</p>
-                        <p class="text-sm text-gray-500">View your personal tasks</p>
+                        <p class="text-sm font-medium text-gray-900"><?php echo __('admin_my_tasks'); ?></p>
+                        <p class="text-sm text-gray-500"><?php echo __('admin_my_tasks_desc'); ?></p>
                     </div>
                 </a>
             </div>

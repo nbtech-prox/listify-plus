@@ -20,13 +20,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $confirm_password = $_POST['confirm_password'] ?? '';
 
     if (empty($email) || empty($full_name) || empty($password) || empty($confirm_password)) {
-        $error = 'Please fill in all fields.';
+        $error = __('error_required_fields');
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = 'Please enter a valid email address.';
+        $error = __('error_invalid_email');
     } elseif (strlen($password) < 6) {
-        $error = 'Password must be at least 6 characters long.';
+        $error = __('reset_password_min_length');
     } elseif ($password !== $confirm_password) {
-        $error = 'Passwords do not match.';
+        $error = __('error_password_mismatch');
     } else {
         $database = new Database();
         $db = $database->getConnection();
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user->email = $email;
 
         if ($user->emailExists()) {
-            $error = 'Email address already exists.';
+            $error = __('auth_email_exists');
         } else {
             $user->full_name = $full_name;
             $user->password = $password;
@@ -62,16 +62,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             if ($user->create()) {
-                setFlash('success', 'Registration successful. Please log in.');
+                setFlash('success', __('auth_registration_success'));
                 redirect('/auth/login.php');
             } else {
-                $error = 'Registration failed. Please try again.';
+                $error = __('auth_registration_failed');
             }
         }
     }
 }
 
-$pageTitle = 'Register';
+$pageTitle = __('auth_register_title');
 include '../includes/header.php';
 ?>
 
@@ -79,12 +79,12 @@ include '../includes/header.php';
     <div class="max-w-md w-full space-y-8">
         <div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Create your account
+                <?php echo __('auth_register_title'); ?>
             </h2>
             <p class="mt-2 text-center text-sm text-gray-600">
-                Or
+                <?php echo __('auth_register_subtitle'); ?>
                 <a href="login.php" class="font-medium text-indigo-600 hover:text-indigo-500">
-                    sign in to existing account
+                    <?php echo __('auth_register_login'); ?>
                 </a>
             </p>
         </div>
@@ -97,33 +97,33 @@ include '../includes/header.php';
             
             <div class="rounded-md shadow-sm space-y-4">
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
+                    <label for="email" class="block text-sm font-medium text-gray-700"><?php echo __('auth_email'); ?></label>
                     <input id="email" name="email" type="email" required 
                            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
-                           placeholder="Email address"
+                           placeholder="<?php echo __('auth_email'); ?>"
                            value="<?php echo isset($_POST['email']) ? escape($_POST['email']) : ''; ?>">
                 </div>
                 <div>
-                    <label for="full_name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <label for="full_name" class="block text-sm font-medium text-gray-700"><?php echo __('auth_full_name'); ?></label>
                     <input id="full_name" name="full_name" type="text" required 
                            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
-                           placeholder="Full Name"
+                           placeholder="<?php echo __('auth_full_name'); ?>"
                            value="<?php echo isset($_POST['full_name']) ? escape($_POST['full_name']) : ''; ?>">
                 </div>
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <label for="password" class="block text-sm font-medium text-gray-700"><?php echo __('auth_password'); ?></label>
                     <input id="password" name="password" type="password" required 
                            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
-                           placeholder="Password (min. 6 characters)">
+                           placeholder="<?php echo __('auth_password'); ?> (<?php echo __('profile_password_min'); ?>)">
                 </div>
                 <div>
-                    <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                    <label for="confirm_password" class="block text-sm font-medium text-gray-700"><?php echo __('auth_confirm_password'); ?></label>
                     <input id="confirm_password" name="confirm_password" type="password" required 
                            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" 
-                           placeholder="Confirm Password">
+                           placeholder="<?php echo __('auth_confirm_password'); ?>">
                 </div>
                 <div>
-                    <label for="profile_image" class="block text-sm font-medium text-gray-700">Profile Image (Optional)</label>
+                    <label for="profile_image" class="block text-sm font-medium text-gray-700"><?php echo __('profile_photo'); ?> (<?php echo __('optional'); ?>)</label>
                     <input id="profile_image" name="profile_image" type="file" accept="image/*"
                            class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                 </div>
@@ -132,7 +132,7 @@ include '../includes/header.php';
             <div>
                 <button type="submit" 
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Register
+                    <?php echo __('auth_sign_up'); ?>
                 </button>
             </div>
         </form>

@@ -19,7 +19,34 @@
             color: #7C3AED;
             font-weight: 700;
         }
+        .lang-dropdown {
+            display: none;
+        }
+        .lang-dropdown.active {
+            display: block;
+        }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const langButton = document.getElementById('lang-button');
+            const langDropdown = document.getElementById('lang-dropdown');
+            
+            if (langButton && langDropdown) {
+                langButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    langDropdown.classList.toggle('active');
+                });
+                
+                // Fechar ao clicar fora
+                document.addEventListener('click', function(e) {
+                    if (!langButton.contains(e.target) && !langDropdown.contains(e.target)) {
+                        langDropdown.classList.remove('active');
+                    }
+                });
+            }
+        });
+    </script>
 </head>
 <body class="bg-gray-100 min-h-screen">
     <nav class="bg-white shadow-lg">
@@ -33,11 +60,56 @@
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
+                    <!-- Language Selector -->
+                    <div class="relative">
+                        <button id="lang-button" type="button" class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <span class="mr-2"><?php echo getLangFlag(getCurrentLang()); ?></span>
+                            <span><?php echo getLangName(getCurrentLang()); ?></span>
+                            <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="lang-dropdown" class="lang-dropdown absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                            <div class="py-1">
+                                <a href="<?php echo BASE_URL; ?>/change_language.php?lang=pt" 
+                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 <?php echo getCurrentLang() == 'pt' ? 'bg-indigo-50 font-semibold' : ''; ?>">
+                                    <span class="mr-3">🇵🇹</span>
+                                    <span>Português</span>
+                                    <?php if (getCurrentLang() == 'pt'): ?>
+                                    <svg class="ml-auto h-4 w-4 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <?php endif; ?>
+                                </a>
+                                <a href="<?php echo BASE_URL; ?>/change_language.php?lang=en" 
+                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 <?php echo getCurrentLang() == 'en' ? 'bg-indigo-50 font-semibold' : ''; ?>">
+                                    <span class="mr-3">🇬🇧</span>
+                                    <span>English</span>
+                                    <?php if (getCurrentLang() == 'en'): ?>
+                                    <svg class="ml-auto h-4 w-4 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <?php endif; ?>
+                                </a>
+                                <a href="<?php echo BASE_URL; ?>/change_language.php?lang=es" 
+                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 <?php echo getCurrentLang() == 'es' ? 'bg-indigo-50 font-semibold' : ''; ?>">
+                                    <span class="mr-3">🇪🇸</span>
+                                    <span>Español</span>
+                                    <?php if (getCurrentLang() == 'es'): ?>
+                                    <svg class="ml-auto h-4 w-4 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <?php endif; ?>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <?php if (isLoggedIn()): ?>
                         <?php if (isAdmin()): ?>
                         <a href="<?php echo BASE_URL; ?>/admin/dashboard.php" 
                            class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Admin Dashboard
+                            <?php echo __('admin_dashboard'); ?>
                         </a>
                         <?php endif; ?>
                         <div class="flex items-center space-x-4">
@@ -58,21 +130,21 @@
                                 <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                 </svg>
-                                Perfil
+                                <?php echo __('profile'); ?>
                             </a>
                             <a href="<?php echo BASE_URL; ?>/auth/logout.php" 
                                class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                Logout
+                                <?php echo __('logout'); ?>
                             </a>
                         </div>
                     <?php else: ?>
                         <a href="<?php echo BASE_URL; ?>/auth/login.php" 
                            class="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Login
+                            <?php echo __('login'); ?>
                         </a>
                         <a href="<?php echo BASE_URL; ?>/auth/register.php" 
                            class="inline-flex items-center px-3 py-1.5 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Register
+                            <?php echo __('register'); ?>
                         </a>
                     <?php endif; ?>
                 </div>

@@ -31,7 +31,7 @@ if (!empty($token)) {
         $user_id = $row['user_id'];
         $valid_token = true;
     } else {
-        $error = 'Link inválido ou expirado. Solicite um novo link de recuperação.';
+        $error = __('reset_password_invalid_token');
     }
 }
 
@@ -41,11 +41,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $valid_token) {
     $confirm_password = $_POST['confirm_password'] ?? '';
     
     if (empty($new_password) || empty($confirm_password)) {
-        $error = 'Todos os campos são obrigatórios.';
+        $error = __('error_required_fields');
     } elseif (strlen($new_password) < 6) {
-        $error = 'A senha deve ter pelo menos 6 caracteres.';
+        $error = __('reset_password_min_length');
     } elseif ($new_password !== $confirm_password) {
-        $error = 'As senhas não coincidem.';
+        $error = __('reset_password_mismatch');
     } else {
         $database = new Database();
         $db = $database->getConnection();
@@ -59,15 +59,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $valid_token) {
             $stmt = $db->prepare("UPDATE password_resets SET used = 1 WHERE token = ?");
             $stmt->execute([$token]);
             
-            $success = 'Senha alterada com sucesso! Você já pode fazer login.';
+            $success = __('reset_password_success');
             $valid_token = false; // Não mostrar mais o formulário
         } else {
-            $error = 'Erro ao alterar senha. Tente novamente.';
+            $error = __('reset_password_error');
         }
     }
 }
 
-$pageTitle = 'Redefinir Senha';
+$pageTitle = __('reset_password_title');
 include '../includes/header.php';
 ?>
 
@@ -75,10 +75,10 @@ include '../includes/header.php';
     <div class="max-w-md w-full space-y-8">
         <div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Redefinir Senha
+                <?php echo __('reset_password_title'); ?>
             </h2>
             <p class="mt-2 text-center text-sm text-gray-600">
-                Crie uma nova senha para sua conta
+                <?php echo __('reset_password_subtitle'); ?>
             </p>
         </div>
 
@@ -97,7 +97,7 @@ include '../includes/header.php';
             </div>
             <div class="text-center">
                 <a href="forgot_password.php" class="font-medium text-indigo-600 hover:text-indigo-500">
-                    Solicitar novo link de recuperação
+                    <?php echo __('reset_password_request_new'); ?>
                 </a>
             </div>
         <?php endif; ?>
@@ -118,7 +118,7 @@ include '../includes/header.php';
             <div class="text-center">
                 <a href="login.php" 
                    class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
-                    Ir para Login
+                    <?php echo __('reset_password_go_login'); ?>
                 </a>
             </div>
         <?php endif; ?>
@@ -127,16 +127,16 @@ include '../includes/header.php';
         <form class="mt-8 space-y-6" method="POST">
             <div class="rounded-md shadow-sm space-y-4">
                 <div>
-                    <label for="new_password" class="block text-sm font-medium text-gray-700">Nova Senha</label>
+                    <label for="new_password" class="block text-sm font-medium text-gray-700"><?php echo __('reset_password_new'); ?></label>
                     <input id="new_password" name="new_password" type="password" required 
                            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
-                           placeholder="Nova senha (mínimo 6 caracteres)">
+                           placeholder="<?php echo __('reset_password_new'); ?> (<?php echo __('profile_password_min'); ?>)">
                 </div>
                 <div>
-                    <label for="confirm_password" class="block text-sm font-medium text-gray-700">Confirmar Nova Senha</label>
+                    <label for="confirm_password" class="block text-sm font-medium text-gray-700"><?php echo __('reset_password_confirm'); ?></label>
                     <input id="confirm_password" name="confirm_password" type="password" required 
                            class="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
-                           placeholder="Confirme a nova senha">
+                           placeholder="<?php echo __('reset_password_confirm'); ?>">
                 </div>
             </div>
 
@@ -146,13 +146,13 @@ include '../includes/header.php';
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
                     </svg>
-                    Redefinir Senha
+                    <?php echo __('reset_password_submit'); ?>
                 </button>
             </div>
 
             <div class="text-center text-sm">
                 <a href="login.php" class="font-medium text-indigo-600 hover:text-indigo-500">
-                    Voltar para Login
+                    <?php echo __('forgot_password_back'); ?>
                 </a>
             </div>
         </form>

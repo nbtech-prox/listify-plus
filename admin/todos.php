@@ -11,15 +11,15 @@ $todo = new Todo($db);
 $stmt = $todo->getAll();
 $todos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$pageTitle = 'Manage Tasks';
+$pageTitle = __('admin_manage_tasks');
 include '../includes/header.php';
 ?>
 
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-7xl mx-auto">
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">Manage Tasks</h1>
-            <p class="mt-2 text-sm text-gray-600">View and manage all tasks from all users</p>
+            <h1 class="text-3xl font-bold text-gray-900"><?php echo __('admin_manage_tasks'); ?></h1>
+            <p class="mt-2 text-sm text-gray-600"><?php echo __('admin_manage_tasks_desc'); ?></p>
         </div>
 
         <?php if (count($todos) > 0): ?>
@@ -30,13 +30,13 @@ include '../includes/header.php';
                         <table class="min-w-full divide-y divide-gray-300">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Task</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">User</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Priority</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Created</th>
+                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"><?php echo __('task'); ?></th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><?php echo __('user'); ?></th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><?php echo __('priority'); ?></th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><?php echo __('status'); ?></th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><?php echo __('created'); ?></th>
                                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                                        <span class="sr-only">Actions</span>
+                                        <span class="sr-only"><?php echo __('actions'); ?></span>
                                     </th>
                                 </tr>
                             </thead>
@@ -64,26 +64,26 @@ include '../includes/header.php';
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                         <?php if ($item['priority'] == 3): ?>
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                            High
+                                            <?php echo __('priority_high'); ?>
                                         </span>
                                         <?php elseif ($item['priority'] == 2): ?>
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                            Medium
+                                            <?php echo __('priority_medium'); ?>
                                         </span>
                                         <?php else: ?>
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                            Low
+                                            <?php echo __('priority_low'); ?>
                                         </span>
                                         <?php endif; ?>
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                         <?php if ($item['completed']): ?>
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                            Completed
+                                            <?php echo __('status_completed'); ?>
                                         </span>
                                         <?php else: ?>
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                            Pending
+                                            <?php echo __('status_pending'); ?>
                                         </span>
                                         <?php endif; ?>
                                     </td>
@@ -94,13 +94,13 @@ include '../includes/header.php';
                                         <div class="flex justify-end space-x-2">
                                             <a href="../todos/edit.php?id=<?php echo $item['id']; ?>" 
                                                class="text-blue-600 hover:text-blue-900">
-                                                Edit
+                                                <?php echo __('edit'); ?>
                                             </a>
                                             <form action="../todos/delete.php" method="POST" class="inline"
-                                                  onsubmit="return confirm('Are you sure you want to delete this task?');">
+                                                  onsubmit="return confirm('<?php echo __('confirm_delete_task'); ?>');">
                                                 <input type="hidden" name="id" value="<?php echo $item['id']; ?>">
                                                 <button type="submit" class="text-red-600 hover:text-red-900">
-                                                    Delete
+                                                    <?php echo __('delete'); ?>
                                                 </button>
                                             </form>
                                         </div>
@@ -118,8 +118,8 @@ include '../includes/header.php';
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
             </svg>
-            <h3 class="mt-2 text-sm font-medium text-gray-900">No tasks</h3>
-            <p class="mt-1 text-sm text-gray-500">No tasks have been created yet.</p>
+            <h3 class="mt-2 text-sm font-medium text-gray-900"><?php echo __('no_tasks'); ?></h3>
+            <p class="mt-1 text-sm text-gray-500"><?php echo __('admin_no_tasks_created'); ?></p>
         </div>
         <?php endif; ?>
     </div>

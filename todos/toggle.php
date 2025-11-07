@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 $id = intval($_POST['id'] ?? 0);
 
 if ($id == 0) {
-    setFlash('error', 'Invalid task ID.');
+    setFlash('error', __('task_invalid_id'));
     redirect('/dashboard.php');
 }
 
@@ -20,20 +20,20 @@ $db = $database->getConnection();
 $todo = new Todo($db);
 
 if (!$todo->getById($id)) {
-    setFlash('error', 'Task not found.');
+    setFlash('error', __('task_not_found'));
     redirect('/dashboard.php');
 }
 
 // Check permission
 if ($todo->user_id != $_SESSION['user_id'] && !isAdmin()) {
-    setFlash('error', 'You do not have permission to update this task.');
+    setFlash('error', __('task_no_permission'));
     redirect('/dashboard.php');
 }
 
 if ($todo->toggle()) {
-    setFlash('success', 'Task status updated successfully!');
+    setFlash('success', __('task_toggled'));
 } else {
-    setFlash('error', 'Failed to update task status.');
+    setFlash('error', __('task_toggle_failed');
 }
 
 redirect('/dashboard.php');

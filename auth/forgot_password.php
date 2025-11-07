@@ -13,9 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = trim($_POST['email'] ?? '');
     
     if (empty($email)) {
-        $error = 'Por favor, insira seu email.';
+        $error = __('forgot_password_email_required');
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = 'Email inválido.';
+        $error = __('forgot_password_invalid_email');
     } else {
         $database = new Database();
         $db = $database->getConnection();
@@ -48,18 +48,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             );
             
             if ($email_sent) {
-                $success = 'Um link de recuperação foi enviado para seu email. Verifique sua caixa de entrada e também a pasta de spam.';
+                $success = __('forgot_password_success');
             } else {
-                $error = 'Erro ao enviar email. Tente novamente mais tarde.';
+                $error = __('forgot_password_email_error');
             }
         } else {
             // Por segurança, não revelar se o email existe ou não
-            $success = 'Se este email estiver cadastrado, você receberá um link de recuperação.';
+            $success = __('forgot_password_email_sent');
         }
     }
 }
 
-$pageTitle = 'Recuperar Senha';
+$pageTitle = __('forgot_password_title');
 include '../includes/header.php';
 ?>
 
@@ -67,10 +67,10 @@ include '../includes/header.php';
     <div class="max-w-md w-full space-y-8">
         <div>
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                Recuperar Senha
+                <?php echo __('forgot_password_title'); ?>
             </h2>
             <p class="mt-2 text-center text-sm text-gray-600">
-                Insira seu email e enviaremos um link para redefinir sua senha
+                <?php echo __('forgot_password_subtitle'); ?>
             </p>
         </div>
         <form class="mt-8 space-y-6" method="POST">
@@ -89,10 +89,10 @@ include '../includes/header.php';
             <?php if (!$success): ?>
             <div class="rounded-md shadow-sm">
                 <div>
-                    <label for="email" class="sr-only">Email</label>
+                    <label for="email" class="sr-only"><?php echo __('auth_email'); ?></label>
                     <input id="email" name="email" type="email" required 
                            class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
-                           placeholder="Seu email"
+                           placeholder="<?php echo __('auth_email'); ?>"
                            value="<?php echo isset($_POST['email']) ? escape($_POST['email']) : ''; ?>">
                 </div>
             </div>
@@ -103,7 +103,7 @@ include '../includes/header.php';
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                     </svg>
-                    Enviar Link de Recuperação
+                    <?php echo __('forgot_password_send'); ?>
                 </button>
             </div>
             <?php endif; ?>
@@ -111,12 +111,12 @@ include '../includes/header.php';
             <div class="flex items-center justify-between">
                 <div class="text-sm">
                     <a href="login.php" class="font-medium text-indigo-600 hover:text-indigo-500">
-                        Voltar para Login
+                        <?php echo __('forgot_password_back'); ?>
                     </a>
                 </div>
                 <div class="text-sm">
                     <a href="register.php" class="font-medium text-indigo-600 hover:text-indigo-500">
-                        Criar conta
+                        <?php echo __('auth_register_title'); ?>
                     </a>
                 </div>
             </div>

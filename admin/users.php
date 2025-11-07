@@ -11,15 +11,15 @@ $user = new User($db);
 $stmt = $user->getAll();
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$pageTitle = 'Manage Users';
+$pageTitle = __('admin_manage_users');
 include '../includes/header.php';
 ?>
 
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-7xl mx-auto">
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">Manage Users</h1>
-            <p class="mt-2 text-sm text-gray-600">View and manage all registered users</p>
+            <h1 class="text-3xl font-bold text-gray-900"><?php echo __('admin_manage_users'); ?></h1>
+            <p class="mt-2 text-sm text-gray-600"><?php echo __('admin_manage_users_desc'); ?></p>
         </div>
 
         <div class="mt-8 flex flex-col">
@@ -29,13 +29,13 @@ include '../includes/header.php';
                         <table class="min-w-full divide-y divide-gray-300">
                             <thead class="bg-gray-50">
                                 <tr>
-                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">User</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Role</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Joined</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Last Login</th>
+                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"><?php echo __('user'); ?></th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><?php echo __('auth_email'); ?></th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><?php echo __('admin_user_role'); ?></th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><?php echo __('admin_user_joined'); ?></th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"><?php echo __('profile_last_login'); ?></th>
                                     <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                                        <span class="sr-only">Actions</span>
+                                        <span class="sr-only"><?php echo __('actions'); ?></span>
                                     </th>
                                 </tr>
                             </thead>
@@ -60,11 +60,11 @@ include '../includes/header.php';
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                         <?php if ($u['is_admin']): ?>
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                            Admin
+                                            <?php echo __('profile_role_admin'); ?>
                                         </span>
                                         <?php else: ?>
                                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                            User
+                                            <?php echo __('profile_role_user'); ?>
                                         </span>
                                         <?php endif; ?>
                                     </td>
@@ -72,7 +72,7 @@ include '../includes/header.php';
                                         <?php echo date('Y-m-d', strtotime($u['created_at'])); ?>
                                     </td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                        <?php echo $u['last_login'] ? date('Y-m-d H:i', strtotime($u['last_login'])) : 'Never'; ?>
+                                        <?php echo $u['last_login'] ? date('Y-m-d H:i', strtotime($u['last_login'])) : __('never'); ?>
                                     </td>
                                     <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                                         <?php if ($u['id'] != $_SESSION['user_id']): ?>
@@ -80,19 +80,19 @@ include '../includes/header.php';
                                             <form action="toggle_admin.php" method="POST" class="inline">
                                                 <input type="hidden" name="user_id" value="<?php echo $u['id']; ?>">
                                                 <button type="submit" class="text-indigo-600 hover:text-indigo-900">
-                                                    <?php echo $u['is_admin'] ? 'Remove Admin' : 'Make Admin'; ?>
+                                                    <?php echo $u['is_admin'] ? __('admin_remove_admin') : __('admin_make_admin'); ?>
                                                 </button>
                                             </form>
                                             <form action="delete_user.php" method="POST" class="inline"
-                                                  onsubmit="return confirm('Are you sure you want to delete this user? All their tasks will also be deleted.');">
+                                                  onsubmit="return confirm('<?php echo __('admin_confirm_delete_user'); ?>');">
                                                 <input type="hidden" name="user_id" value="<?php echo $u['id']; ?>">
                                                 <button type="submit" class="text-red-600 hover:text-red-900">
-                                                    Delete
+                                                    <?php echo __('delete'); ?>
                                                 </button>
                                             </form>
                                         </div>
                                         <?php else: ?>
-                                        <span class="text-gray-400">You</span>
+                                        <span class="text-gray-400"><?php echo __('you'); ?></span>
                                         <?php endif; ?>
                                     </td>
                                 </tr>

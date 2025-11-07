@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
 $id = intval($_POST['id'] ?? 0);
 
 if ($id == 0) {
-    setFlash('error', 'Invalid task ID.');
+    setFlash('error', __('task_invalid_id'));
     redirect('/dashboard.php');
 }
 
@@ -20,20 +20,20 @@ $db = $database->getConnection();
 $todo = new Todo($db);
 
 if (!$todo->getById($id)) {
-    setFlash('error', 'Task not found.');
+    setFlash('error', __('task_not_found'));
     redirect('/dashboard.php');
 }
 
 // Check permission
 if ($todo->user_id != $_SESSION['user_id'] && !isAdmin()) {
-    setFlash('error', 'You do not have permission to delete this task.');
+    setFlash('error', __('task_no_permission'));
     redirect('/dashboard.php');
 }
 
 if ($todo->delete()) {
-    setFlash('success', 'Task deleted successfully!');
+    setFlash('success', __('task_deleted'));
 } else {
-    setFlash('error', 'Failed to delete task.');
+    setFlash('error', __('task_delete_failed');
 }
 
 redirect('/dashboard.php');

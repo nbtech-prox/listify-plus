@@ -20,6 +20,75 @@ ini_set('error_log', __DIR__ . '/../logs/php-errors.log');
 // Include database
 require_once __DIR__ . '/database.php';
 
+// ============================================
+// MULTI-LANGUAGE SYSTEM
+// ============================================
+
+// Default language
+define('DEFAULT_LANG', 'pt');
+
+// Available languages
+$available_languages = ['pt', 'en', 'es'];
+
+// Get current language from session or cookie
+if (!isset($_SESSION['lang'])) {
+    if (isset($_COOKIE['lang']) && in_array($_COOKIE['lang'], $available_languages)) {
+        $_SESSION['lang'] = $_COOKIE['lang'];
+    } else {
+        $_SESSION['lang'] = DEFAULT_LANG;
+    }
+}
+
+// Load language file
+$lang = [];
+$lang_file = __DIR__ . '/../lang/' . $_SESSION['lang'] . '.php';
+if (file_exists($lang_file)) {
+    $lang = require $lang_file;
+}
+
+// Translation function
+function __($key) {
+    global $lang;
+    return isset($lang[$key]) ? $lang[$key] : $key;
+}
+
+// Get current language
+function getCurrentLang() {
+    return $_SESSION['lang'] ?? DEFAULT_LANG;
+}
+
+// Set language
+function setLanguage($new_lang) {
+    global $available_languages;
+    if (in_array($new_lang, $available_languages)) {
+        $_SESSION['lang'] = $new_lang;
+        setcookie('lang', $new_lang, time() + (365 * 24 * 60 * 60), '/'); // 1 year
+        return true;
+    }
+    return false;
+}
+
+// Get language name
+function getLangName($code) {
+    $names = [
+        'pt' => 'Português',
+        'en' => 'English',
+        'es' => 'Español'
+    ];
+    return $names[$code] ?? $code;
+}
+
+// Get language flag emoji
+function getLangFlag($code) {
+    $flags = [
+        'pt' => '🇵🇹',
+        'en' => '🇬🇧',
+        'es' => '🇪🇸'
+    ];
+    return $flags[$code] ?? '🌐';
+}
+
+// ============================================
 // Helper functions
 function redirect($url) {
     header("Location: " . BASE_URL . $url);
@@ -56,7 +125,7 @@ function requireLogin() {
 function requireAdmin() {
     requireLogin();
     if (!isAdmin()) {
-        setFlash('error', 'You do not have permission to access this page.');
+        setFlash('error', __('admin_no_permission'));
         redirect('/dashboard.php');
     }
 }

@@ -7,7 +7,7 @@ requireLogin();
 $id = intval($_GET['id'] ?? 0);
 
 if ($id == 0) {
-    setFlash('error', 'Invalid task ID.');
+    setFlash('error', __('task_invalid_id'));
     redirect('/dashboard.php');
 }
 
@@ -16,13 +16,13 @@ $db = $database->getConnection();
 $todo = new Todo($db);
 
 if (!$todo->getById($id)) {
-    setFlash('error', 'Task not found.');
+    setFlash('error', __('task_not_found'));
     redirect('/dashboard.php');
 }
 
 // Check permission
 if ($todo->user_id != $_SESSION['user_id'] && !isAdmin()) {
-    setFlash('error', 'You do not have permission to edit this task.');
+    setFlash('error', __('task_no_permission'));
     redirect('/dashboard.php');
 }
 
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $completed = isset($_POST['completed']) ? 1 : 0;
 
     if (empty($title)) {
-        $error = 'Title is required.';
+        $error = __('task_title_required');
     } else {
         $todo->title = $title;
         $todo->description = $description;
@@ -43,22 +43,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $todo->completed = $completed;
 
         if ($todo->update()) {
-            setFlash('success', 'Task updated successfully!');
+            setFlash('success', __('task_updated'));
             redirect('/dashboard.php');
         } else {
-            $error = 'Failed to update task. Please try again.';
+            $error = __('task_update_failed');
         }
     }
 }
 
-$pageTitle = 'Edit Task';
+$pageTitle = __('task_edit');
 include '../includes/header.php';
 ?>
 
 <div class="container mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto">
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900">Edit Task</h1>
+            <h1 class="text-3xl font-bold text-gray-900"><?php echo __('task_edit_title'); ?></h1>
         </div>
 
         <div class="bg-white shadow-md rounded-lg p-6">
@@ -70,25 +70,25 @@ include '../includes/header.php';
 
             <form method="POST" class="space-y-6">
                 <div>
-                    <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                    <label for="title" class="block text-sm font-medium text-gray-700"><?php echo __('task_title'); ?></label>
                     <input type="text" name="title" id="title" required
                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                            value="<?php echo escape($todo->title); ?>">
                 </div>
 
                 <div>
-                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <label for="description" class="block text-sm font-medium text-gray-700"><?php echo __('task_description'); ?></label>
                     <textarea name="description" id="description" rows="4"
                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"><?php echo escape($todo->description); ?></textarea>
                 </div>
 
                 <div>
-                    <label for="priority" class="block text-sm font-medium text-gray-700">Priority</label>
+                    <label for="priority" class="block text-sm font-medium text-gray-700"><?php echo __('priority'); ?></label>
                     <select name="priority" id="priority"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                        <option value="1" <?php echo $todo->priority == 1 ? 'selected' : ''; ?>>Low</option>
-                        <option value="2" <?php echo $todo->priority == 2 ? 'selected' : ''; ?>>Medium</option>
-                        <option value="3" <?php echo $todo->priority == 3 ? 'selected' : ''; ?>>High</option>
+                        <option value="1" <?php echo $todo->priority == 1 ? 'selected' : ''; ?>><?php echo __('priority_low'); ?></option>
+                        <option value="2" <?php echo $todo->priority == 2 ? 'selected' : ''; ?>><?php echo __('priority_medium'); ?></option>
+                        <option value="3" <?php echo $todo->priority == 3 ? 'selected' : ''; ?>><?php echo __('priority_high'); ?></option>
                     </select>
                 </div>
 
@@ -97,18 +97,18 @@ include '../includes/header.php';
                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                            <?php echo $todo->completed ? 'checked' : ''; ?>>
                     <label for="completed" class="ml-2 block text-sm text-gray-900">
-                        Mark as completed
+                        <?php echo __('task_mark_completed'); ?>
                     </label>
                 </div>
 
                 <div class="flex justify-end space-x-3">
                     <a href="../dashboard.php" 
                        class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-                        Cancel
+                        <?php echo __('cancel'); ?>
                     </a>
                     <button type="submit" 
                             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
-                        Update Task
+                        <?php echo __('task_update'); ?>
                     </button>
                 </div>
             </form>
